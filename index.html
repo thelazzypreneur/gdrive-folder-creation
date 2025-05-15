@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <title>Create Folder</title>
+    <style>
+      body { font-family: Arial, sans-serif; padding: 20px; max-width: 400px; margin: auto; }
+      input[type=text] { width: 100%; padding: 8px; margin: 10px 0; box-sizing: border-box; }
+      button { padding: 10px 20px; font-size: 16px; }
+      #result { margin-top: 20px; white-space: pre-wrap; }
+    </style>
+  </head>
+  <body>
+    <h2>Create Client Folder Structure</h2>
+    <form id="clientForm" onsubmit="handleSubmit(event)">
+      <label for="clientName">Client Name:</label>
+      <input type="text" id="clientName" name="clientName" placeholder="Enter client name" required>
+      <button type="submit">Create Folders</button>
+    </form>
+    <div id="result"></div>
+
+    <script>
+      function handleSubmit(e) {
+        e.preventDefault();
+        const clientName = document.getElementById('clientName').value;
+
+        google.script.run
+          .withSuccessHandler(msg => {
+            document.getElementById('result').textContent = msg;
+            document.getElementById('clientForm').reset();
+          })
+          .withFailureHandler(err => {
+            document.getElementById('result').textContent = '❌ Error: ' + err.message;
+          })
+          .createFolders(clientName);
+      }
+    </script>
+  </body>
+</html>
